@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Iliad Viewer</title>
+  <style>
+    body {
+      font-family: serif;
+      line-height: 1.6;
+      margin: 2rem;
+    }
+    .controls {
+      margin-bottom: 1rem;
+    }
+    .controls button {
+      margin-right: 1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    .line {
+      display: none;
+    }
+    .line .original {
+      display: none;
+    }
+    .line .translation {
+      display: none;
+      font-style: normal;
+    }
+    .line.visible {
+      display: block;
+    }
+    .line.interpolated.show-original.show-translation .translation {
+      font-style: italic;
+      color: #666;
+    }
+    .line.show-original .original,
+    .line.show-translation .translation {
+      display: block;
+    }
+    .side-by-side {
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .column {
+      width: 48%;
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button onclick="setView('interpolated')">Interpolated View</button>
+    <button onclick="setView('side-by-side')">Side-by-Side</button>
+    <button onclick="setView('original')">Original Only</button>
+    <button onclick="setView('translation')">Translation Only</button>
+  </div>
+
+  <div id="viewer">
+    <div class="line interpolated">
+      <div class="original">Μῆνιν ἄειδε θεὰ Πηληϊάδεω Ἀχιλῆος</div>
+      <div class="translation">Achilles' wrath, to Greece the direful spring</div>
+    </div>
+    <div class="line interpolated">
+      <div class="original">οὐλομένην, ἣ μυρί᾽ Ἀχαιοῖς ἄλγε᾽ ἔθηκε,</div>
+      <div class="translation">Of woes unnumber'd, heavenly goddess, sing!</div>
+    </div>
+    <div class="line interpolated">
+      <div class="original">πολλὰς δ᾽ ἰφθίμους ψυχὰς Ἄϊδι προΐαψεν</div>
+      <div class="translation">That wrath which hurl’d to Pluto’s gloomy reign</div>
+    </div>
+    <div class="line interpolated">
+      <div class="original">ἡρώων, αὐτοὺς δὲ ἑλώρια τεῦχε κύνεσσιν</div>
+      <div class="translation">The souls of mighty chiefs untimely slain</div>
+    </div>
+    <!-- Add more lines as needed -->
+  </div>
+
+  <div id="side-by-side-view" class="side-by-side" style="display: none;">
+    <div class="column" id="original-col">
+      <div>Μῆνιν ἄειδε θεὰ Πηληϊάδεω Ἀχιλῆος</div>
+      <div>οὐλομένην, ἣ μυρί᾽ Ἀχαιοῖς ἄλγε᾽ ἔθηκε,</div>
+      <div>πολλὰς δ᾽ ἰφθίμους ψυχὰς Ἄϊδι προΐαψεν</div>
+      <div>ἡρώων, αὐτοὺς δὲ ἑλώρια τεῦχε κύνεσσιν</div>
+    </div>
+    <div class="column" id="translation-col">
+      <div>Achilles' wrath, to Greece the direful spring</div>
+      <div>Of woes unnumber'd, heavenly goddess, sing!</div>
+      <div>That wrath which hurl’d to Pluto’s gloomy reign</div>
+      <div>The souls of mighty chiefs untimely slain</div>
+    </div>
+  </div>
+
+  <script>
+    function setView(mode) {
+      const viewer = document.getElementById('viewer');
+      const lines = viewer.querySelectorAll('.line');
+      const sideView = document.getElementById('side-by-side-view');
+
+      viewer.style.display = 'block';
+      sideView.style.display = 'none';
+
+      lines.forEach(line => {
+        line.classList.remove('visible', 'show-original', 'show-translation');
+        line.querySelector('.translation').style.fontStyle = 'normal';
+      });
+
+      if (mode === 'original') {
+        lines.forEach(line => {
+          line.classList.add('visible', 'show-original');
+        });
+      } else if (mode === 'translation') {
+        lines.forEach(line => {
+          line.classList.add('visible', 'show-translation');
+        });
+      } else if (mode === 'interpolated') {
+        lines.forEach(line => {
+          line.classList.add('visible', 'show-original', 'show-translation');
+          line.querySelector('.translation').style.fontStyle = 'italic';
+        });
+      } else if (mode === 'side-by-side') {
+        viewer.style.display = 'none';
+        sideView.style.display = 'flex';
+      }
+    }
+  </script>
+</body>
+</html>
+
